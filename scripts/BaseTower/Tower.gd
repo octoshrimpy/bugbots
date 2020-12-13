@@ -32,6 +32,7 @@ func _process(delta):
 		gun.rotation = lerp_angle(gun.rotation, goto_rotation, lerp_speed)
 		
 		var rotation_difference = abs(gun.rotation - goto_rotation)
+		#TODO: add check for targets, otherwise this fires like my piano
 		if abs(gun.rotation - goto_rotation) < 0.1:
 			gun.shoot(target_location)
 		
