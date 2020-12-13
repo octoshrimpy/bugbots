@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://sprites/tower_gun_bullet.png" type="Texture" id=1]
+[ext_resource path="res://sprites/tower_platform_1.png" type="Texture" id=2]
+[ext_resource path="res://scripts/Tower.gd" type="Script" id=3]
+[ext_resource path="res://scenes/Gun.gd" type="Script" id=4]
+
+[node name="Tower" type="Node2D"]
+scale = Vector2( 4, 4 )
+script = ExtResource( 3 )
+
+[node name="Platform" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="Gun" type="Node2D" parent="."]
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="shoot_timer" type="Timer" parent="Gun"]
+autostart = true
+
+[node name="muzzle" type="Position2D" parent="Gun"]
+position = Vector2( 12.8148, 0.0701542 )
+
+[node name="Sprite" type="Sprite" parent="Gun"]
+position = Vector2( -1.90735e-06, 0 )
+rotation = 1.5708
+texture = ExtResource( 1 )
+offset = Vector2( 0, -4 )
+__meta__ = {
+"_edit_lock_": true
+}
+[connection signal="timeout" from="Gun/shoot_timer" to="Gun" method="_on_shoot_timer_timeout"]
