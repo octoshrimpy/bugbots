@@ -6,6 +6,8 @@ var range_max
 var bullet_scene
 var fire_rate
 var fire_speed
+var rotation_speed
+var precision
 onready var gun = $Gun
 
 
@@ -15,6 +17,8 @@ func _init():
 	bullet_scene = preload("res://scenes/Bullet_1.tscn")
 	fire_rate = 10
 	fire_speed = 150
+	rotation_speed = 5  # between 1 and 10
+	precision =  5
 	gun = $Gun
 
 
@@ -22,8 +26,15 @@ func _init():
 func _process(delta):
 	var target_location = _get_target_xy()
 	if _target_within_range(target_location):
-		gun.look_at(target_location)
-		gun.shoot(target_location)
+		
+		var goto_rotation = (target_location - gun.global_position).normalized().angle()
+		var lerp_speed = float(rotation_speed) * (precision * 0.01)
+		gun.rotation = lerp_angle(gun.rotation, goto_rotation, lerp_speed)
+		
+		var rotation_difference = abs(gun.rotation - goto_rotation)
+		if abs(gun.rotation - goto_rotation) < 0.1:
+			gun.shoot(target_location)
+		
 
 func _get_target_xy():
 	# using mouse for now
