@@ -9,58 +9,74 @@ var fire_speed
 var rotation_speed
 var precision
 var turret_range
+var target_xy
 onready var gun = $Gun
 
 func _init():
-  range_min = 60
-  range_max = 500
   bullet_scene = preload("res://scenes/Bullet_1.tscn")
-  fire_rate = 10
-  fire_speed = 150
-  rotation_speed = 3 # between 1 and 10
-  precision =  5
+  range_min = 60 # Minimum range a tower can fire
+  range_max = 500 # Maximum range a tower can fire
+  fire_rate = 10 # Number of bullets shot per second
+  fire_speed = 150 # Speed of bullet - px/sec
+  rotation_speed = 3 # [1..10] Speed tower turns towards target
+  precision =  5 # @octoshrimpy Is this variable per tower? What does this affect?
   gun = $Gun
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-  var target_location = get_target_xy()
-  if target_within_range(target_location):
-    var goto_rotation = (target_location - gun.global_position).normalized().angle()
-    var lerp_speed = float(rotation_speed) * (precision * 0.01)
-    gun.rotation = lerp_angle(gun.rotation, goto_rotation, lerp_speed)
+  find_target()
 
-    var rotation_difference = fmod(abs(gun.rotation - goto_rotation), TAU)
-    #TODO: add check for targets, otherwise this fires like my piano
-
-    if rotation_difference < 0.1:
-      gun.shoot(target_location)
+  if target_within_range():
+    var rotation_difference = aim_towards_target()
+    if rotation_difference < 0.1: # Should this be extracted to an "accuracy" variable?
+      gun.shoot(target_xy)
 
 func _input(event):
+  # Click anywhere on the screen to output debug information for the tower.
   if event is InputEventMouseButton:
    debug()
-
-func get_target_xy():
-  # using mouse for now
-  return get_global_mouse_position()
-
-func target_within_range(target_location):
-  var distance = self.position.distance_to(target_location)
-
-  return range_max > distance && distance > range_min
 
 func _on_shoot_timer_timeout():
   gun.can_shoot = true
 
+func find_target():
+  # using mouse for now
+  # Eventually find bugs, if none found- return nothing
+  target_xy = get_global_mouse_position()
+
+func aim_towards_target():
+  var goto_rotation = (target_xy - gun.global_position).normalized().angle()
+  var lerp_speed = float(rotation_speed) * (precision * 0.01)
+
+  gun.rotation = fmod(lerp_angle(gun.rotation, goto_rotation, lerp_speed), TAU)
+  return angle_difference(gun.rotation, goto_rotation)
+
+func angle_difference(angle1, angle2):
+  if angle1 < 0:
+    angle1 += TAU
+  if angle2 < 0:
+    angle2 += TAU
+
+  return abs(angle2 - angle1)
+
+func target_within_range():
+  if target_xy == null:
+    return false
+
+  var distance = position.distance_to(target_xy)
+
+  return distance < range_max && distance > range_min
+
 func debug():
-  var target_location = get_target_xy()
   var mouse_loc = get_global_mouse_position()
-  var goto_rotation = (target_location - gun.global_position).normalized().angle()
-  var rotation_difference = fmod(abs(gun.rotation - goto_rotation), TAU)
+  var goto_rotation = (target_xy - gun.global_position).normalized().angle()
+  var rotation_difference = angle_difference(gun.rotation, goto_rotation)
 
   print(
     "\n Mouse.x: " + str(mouse_loc.x) +
     "\n Mouse.y: " + str(mouse_loc.y) +
-    "\n target_within_range: " + str(target_within_range(target_location)) +
+    "\n target_xy: " + str(target_xy) +
+    "\n target_within_range: " + str(target_within_range()) +
     "\n gun.rotation: " + str(gun.rotation) +
     "\n goto_rotation: " + str(goto_rotation) +
     "\n rotation_difference: " + str(rotation_difference) +
