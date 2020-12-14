@@ -35,6 +35,10 @@ func _process(delta):
     if rotation_difference < 0.1:
       gun.shoot(target_location)
 
+func _input(event):
+  if event is InputEventMouseButton:
+   debug()
+
 func get_target_xy():
   # using mouse for now
   return get_global_mouse_position()
@@ -46,3 +50,18 @@ func target_within_range(target_location):
 
 func _on_shoot_timer_timeout():
   gun.can_shoot = true
+
+func debug():
+  var target_location = get_target_xy()
+  var mouse_loc = get_global_mouse_position()
+  var goto_rotation = (target_location - gun.global_position).normalized().angle()
+  var lerp_speed = float(rotation_speed) * (precision * 0.01)
+
+  print(
+    "\n Mouse.x: " + str(mouse_loc.x) +
+    "\n Mouse.y: " + str(mouse_loc.y) +
+    "\n target_within_range: " + str(target_within_range(target_location)) +
+    "\n gun.rotation: " + str(gun.rotation) +
+    "\n goto_rotation: " + str(goto_rotation) +
+    "\n can_shoot: " + str(gun.can_shoot)
+  )
