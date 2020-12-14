@@ -6,7 +6,7 @@ extends Node2D
 
 onready var Bullet = get_parent().bullet_scene
 onready var muzzle = $muzzle
-onready var timer = $shoot_timer
+onready var timer = get_node("../shoot_timer")
 onready var fire_rate_secs = 1.0 / get_parent().fire_rate
 onready var fire_speed = get_parent().fire_speed
 onready var can_shoot = true
@@ -28,6 +28,4 @@ func shoot(target_xy):
     bullet.global_transform = muzzle.global_transform
     can_shoot = false
     timer.wait_time = fire_rate_secs
-
-func _on_shoot_timer_timeout():
-  can_shoot = true
+    timer.start()

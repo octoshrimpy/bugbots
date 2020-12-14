@@ -12,14 +12,13 @@ script = ExtResource( 3 )
 [node name="Platform" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 
+[node name="shoot_timer" type="Timer" parent="."]
+
 [node name="Gun" type="Node2D" parent="."]
 script = ExtResource( 4 )
 __meta__ = {
 "_edit_lock_": true
 }
-
-[node name="shoot_timer" type="Timer" parent="Gun"]
-autostart = true
 
 [node name="muzzle" type="Position2D" parent="Gun"]
 position = Vector2( 12.8148, 0.0701542 )
@@ -32,4 +31,4 @@ offset = Vector2( 0, -4 )
 __meta__ = {
 "_edit_lock_": true
 }
-[connection signal="timeout" from="Gun/shoot_timer" to="Gun" method="_on_shoot_timer_timeout"]
+[connection signal="timeout" from="shoot_timer" to="." method="_on_shoot_timer_timeout"]

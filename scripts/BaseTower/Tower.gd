@@ -44,3 +44,6 @@ func _target_within_range(target_location):
   if range_max > distance && distance > range_min:
     return true
   return false
+
+func _on_shoot_timer_timeout():
+  gun.can_shoot = true
