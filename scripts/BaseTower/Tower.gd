@@ -23,27 +23,26 @@ func _init():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-  var target_location = _get_target_xy()
-  if _target_within_range(target_location):
-
+  var target_location = get_target_xy()
+  if target_within_range(target_location):
     var goto_rotation = (target_location - gun.global_position).normalized().angle()
     var lerp_speed = float(rotation_speed) * (precision * 0.01)
     gun.rotation = lerp_angle(gun.rotation, goto_rotation, lerp_speed)
 
     var rotation_difference = abs(gun.rotation - goto_rotation)
     #TODO: add check for targets, otherwise this fires like my piano
-    if abs(gun.rotation - goto_rotation) < 0.1:
+
+    if rotation_difference < 0.1:
       gun.shoot(target_location)
 
-func _get_target_xy():
+func get_target_xy():
   # using mouse for now
   return get_global_mouse_position()
 
-func _target_within_range(target_location):
+func target_within_range(target_location):
   var distance = self.position.distance_to(target_location)
-  if range_max > distance && distance > range_min:
-    return true
-  return false
+
+  return range_max > distance && distance > range_min
 
 func _on_shoot_timer_timeout():
   gun.can_shoot = true
