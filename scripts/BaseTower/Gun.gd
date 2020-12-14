@@ -13,22 +13,21 @@ onready var can_shoot = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
-
+  pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
-	
+  pass
+
 func shoot(target_xy):
-	if can_shoot:
-		var bullet = Bullet.instance()
-		bullet.init(target_xy, fire_speed)
-		owner.add_child(bullet)
-		owner.move_child(bullet, 0)
-		bullet.global_transform = muzzle.global_transform
-		can_shoot = false
-		timer.wait_time = fire_rate_secs
+  if can_shoot:
+    var bullet = Bullet.instance()
+    bullet.init(target_xy, fire_speed)
+    owner.add_child(bullet)
+    owner.move_child(bullet, 0)
+    bullet.global_transform = muzzle.global_transform
+    can_shoot = false
+    timer.wait_time = fire_rate_secs
 
 func _on_shoot_timer_timeout():
-	can_shoot = true
+  can_shoot = true
