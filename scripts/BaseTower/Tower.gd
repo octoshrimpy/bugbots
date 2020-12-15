@@ -10,6 +10,7 @@ var rotation_speed
 var precision
 var turret_range
 var target_xy
+var math = load("res://scripts/AngleMath.gd")
 onready var gun = $Gun
 
 func _init():
@@ -49,15 +50,7 @@ func aim_towards_target():
   var lerp_speed = float(rotation_speed) * (precision * 0.01)
 
   gun.rotation = fmod(lerp_angle(gun.rotation, goto_rotation, lerp_speed), TAU)
-  return angle_difference(gun.rotation, goto_rotation)
-
-func angle_difference(angle1, angle2):
-  if angle1 < 0:
-    angle1 += TAU
-  if angle2 < 0:
-    angle2 += TAU
-
-  return abs(angle2 - angle1)
+  return math.angle_difference(gun.rotation, goto_rotation)
 
 func target_within_range():
   if target_xy == null:
@@ -70,7 +63,7 @@ func target_within_range():
 func debug():
   var mouse_loc = get_global_mouse_position()
   var goto_rotation = (target_xy - gun.global_position).normalized().angle()
-  var rotation_difference = angle_difference(gun.rotation, goto_rotation)
+  var rotation_difference = math.angle_difference(gun.rotation, goto_rotation)
 
   print(
     "\n Mouse.x: " + str(mouse_loc.x) +
