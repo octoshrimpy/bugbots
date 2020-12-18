@@ -10,18 +10,18 @@ var rotation_speed
 var precision
 var turret_range
 var target_xy
-var math = load("res://scripts/AngleMath.gd")
+var accuracy
+var math = load("res://scripts/bugbotlib/AngleMath.gd")
 onready var gun = $Gun
 
 func _init():
-  bullet_scene = preload("res://scenes/Bullet_1.tscn")
+  bullet_scene = preload("res://scenes/bullets/Bullet_1.tscn")
   range_min = 60 # Minimum range a tower can fire
   range_max = 500 # Maximum range a tower can fire
   fire_rate = 10 # Number of bullets shot per second
   fire_speed = 150 # Speed of bullet - px/sec
   rotation_speed = 3 # [1..10] Speed tower turns towards target
-  precision =  5 # @octoshrimpy Is this variable per tower? What does this affect?
-  gun = $Gun
+  accuracy =  0.1 # angle difference between current tower angle and perfect angle towards target
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -29,7 +29,7 @@ func _process(delta):
 
   if target_within_range():
     var rotation_difference = aim_towards_target()
-    if rotation_difference < 0.1: # Should this be extracted to an "accuracy" variable?
+    if rotation_difference < accuracy: 
       gun.shoot(target_xy)
 
 # func _input(event):

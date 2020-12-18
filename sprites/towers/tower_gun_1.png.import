@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bullet_1.png-ecf2ff30cc77e24401559cce4d5472e0.stex"
+path="res://.import/tower_gun_1.png-db4fd9e554d18b9976ab6878f68f1f1a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/bullet_1.png"
-dest_files=[ "res://.import/bullet_1.png-ecf2ff30cc77e24401559cce4d5472e0.stex" ]
+source_file="res://sprites/towers/tower_gun_1.png"
+dest_files=[ "res://.import/tower_gun_1.png-db4fd9e554d18b9976ab6878f68f1f1a.stex" ]
 
 [params]
 
