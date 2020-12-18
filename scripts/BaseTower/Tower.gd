@@ -7,10 +7,10 @@ var bullet_scene
 var fire_rate
 var fire_speed
 var rotation_speed
-var precision
 var turret_range
 var target_xy
 var accuracy
+var precision # I'm not sure what this does anymore, tbh. 
 var math = load("res://scripts/bugbotlib/AngleMath.gd")
 onready var gun = $Gun
 
@@ -22,7 +22,7 @@ func _init():
   fire_speed = 150 # Speed of bullet - px/sec
   rotation_speed = 3 # [1..10] Speed tower turns towards target
   accuracy =  0.1 # angle difference between current tower angle and perfect angle towards target
-
+  precision = 5
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
   find_target()
