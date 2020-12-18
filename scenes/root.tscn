@@ -1,12 +1,28 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/Tower.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/Bug.gd" type="Script" id=2]
+[ext_resource path="res://scenes/Bug.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/Bug.gd" type="Script" id=3]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 5.71674
+height = 8.01819
 
 [node name="root" type="Node2D"]
 
 [node name="Tower" parent="." instance=ExtResource( 1 )]
 position = Vector2( 118.038, 76.3298 )
 
-[node name="Bug" type="Node2D" parent="."]
-script = ExtResource( 2 )
+[node name="Bug" type="Area2D" parent="." instance=ExtResource( 2 )]
+position = Vector2( 755.366, 380.047 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bug"]
+shape = SubResource( 1 )
+
+[node name="Bug2" type="Area2D" parent="." instance=ExtResource( 2 )]
+position = Vector2( 669.073, 377.683 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Bug2"]
+shape = SubResource( 1 )

@@ -32,10 +32,10 @@ func _process(delta):
     if rotation_difference < 0.1: # Should this be extracted to an "accuracy" variable?
       gun.shoot(target_xy)
 
-func _input(event):
-  # Click anywhere on the screen to output debug information for the tower.
-  if event is InputEventMouseButton:
-   debug()
+# func _input(event):
+#   # Click anywhere on the screen to output debug information for the tower.
+#   if event is InputEventMouseButton:
+#    debug()
 
 func _on_shoot_timer_timeout():
   gun.can_shoot = true
